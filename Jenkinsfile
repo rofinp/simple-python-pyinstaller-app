@@ -1,16 +1,14 @@
 node {
   stage('Build') {
-    docker {
-      image 'python:2-alpine'
+    docker.image('python:2-alpine').inside {
+      sh 'python -m py_compile sources/add2vals.py sources/calc.py'
     }
-    sh 'python -m py_compile sources/add2vals.py source/calc.py'
   }
 
   stage('Test') {
-    docker {
-      image 'qnib/pytest'
+    docker.image('qnib/pytest').inside {
+      sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
     }
-    sh 'py.test --verbose --junit-xml test-reports/result.xml sources/test_calc.py'
     post {
       always {
         junit 'test-reports/results.xml'
