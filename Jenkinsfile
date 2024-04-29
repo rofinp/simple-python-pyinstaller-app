@@ -1,6 +1,6 @@
 node {
   stage('Build') {
-    docker.image('python:3.12.3-bookworm').inside {
+    docker.image('python:2-alpine').inside {
       sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
     }
   }
